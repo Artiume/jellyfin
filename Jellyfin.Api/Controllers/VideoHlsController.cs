@@ -406,9 +406,15 @@ namespace Jellyfin.Api.Controllers
                 "\"hls/{0}/\"",
                 Path.GetFileNameWithoutExtension(outputPath));
 
+            var ReplayGain = '';
+            if (ifUserConfiguration.ReplayGain = 1)
+            {
+                ReplayGain = string.format(" -af volume=replaygain=track");
+            }
+
             return string.Format(
                     CultureInfo.InvariantCulture,
-                    "{0} {1} -map_metadata -1 -map_chapters -1 -threads {2} {3} {4} {5} -copyts -avoid_negative_ts disabled -max_muxing_queue_size {6} -f hls -max_delay 5000000 -hls_time {7} -hls_segment_type {8} -start_number 0 -hls_base_url {9} -hls_playlist_type event -hls_segment_filename \"{10}\" -y \"{11}\"",
+                    "{0} {1} -map_metadata -1 -map_chapters -1 -threads {2} {3} {4} {5} {13} -copyts -avoid_negative_ts disabled -max_muxing_queue_size {6} -f hls -max_delay 5000000 -hls_time {7} -hls_segment_type {8} -start_number 0 -hls_base_url {9} -hls_playlist_type event -hls_segment_filename \"{10}\" -y \"{11}\"",
                     inputModifier,
                     _encodingHelper.GetInputArgument(state, _encodingOptions),
                     threads,
@@ -420,7 +426,8 @@ namespace Jellyfin.Api.Controllers
                     segmentFormat,
                     baseUrlParam,
                     outputTsArg,
-                    outputPath).Trim();
+                    outputPath,
+                    ReplayGain).Trim();
         }
 
         /// <summary>
