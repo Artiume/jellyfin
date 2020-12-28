@@ -245,7 +245,7 @@ namespace Emby.Server.Implementations.Library
                     }
                 }
             }
-            else if (positionTicks > 0 && hasRuntime && (item is book))
+            else if (positionTicks > 0 && hasRuntime && (item is Book))
             {
                 // 10,000 ticks per millisecond * 60,000 milliseconds per minute = 600,000,000 ticks per minute
                 var minIn = decimal.Divide(positionTicks, 600000000);
