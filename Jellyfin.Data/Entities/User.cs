@@ -184,6 +184,12 @@ namespace Jellyfin.Data.Entities
         public DateTime? LastLoginDate { get; set; }
 
         /// <summary>
+        /// Required
+        /// </summary>
+        [Required]
+        public bool ReplayGain { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of login attempts the user can make before they are locked out.
         /// </summary>
         public int? LoginAttemptsBeforeLockout { get; set; }
