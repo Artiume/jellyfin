@@ -24,6 +24,12 @@ namespace MediaBrowser.Model.Configuration
         public bool PlayDefaultAudioTrack { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to use loudnorm in ffmpeg.
+        /// </summary>
+        /// <value><c>true</c> enables loudnorm in ffmpeg; otherwise, <c>false</c>.</value>
+        public bool ReplayGain { get; set; }
+        
+        /// <summary>
         /// Gets or sets the subtitle language preference.
         /// </summary>
         /// <value>The subtitle language preference.</value>
