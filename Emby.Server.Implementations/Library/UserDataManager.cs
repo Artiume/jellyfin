@@ -14,6 +14,7 @@ using MediaBrowser.Controller.Persistence;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using Book = MediaBrowser.Controller.Entities.Book;
+using AudioBook = MediaBrowser.Controller.Entities.AudioBook;
 
 namespace Emby.Server.Implementations.Library
 {
@@ -219,7 +220,7 @@ namespace Emby.Server.Implementations.Library
             var hasRuntime = runtimeTicks > 0;
 
             // If a position has been reported, and if we know the duration
-            if (positionTicks > 0 && hasRuntime && !(item is Book))
+            if (positionTicks > 0 && hasRuntime && !(item is AudioBook))
             {
                 var pctIn = decimal.Divide(positionTicks, runtimeTicks) * 100;
 
@@ -238,25 +239,25 @@ namespace Emby.Server.Implementations.Library
                 {
                     // Enforce MinResumeDuration
                     var durationSeconds = TimeSpan.FromTicks(runtimeTicks).TotalSeconds;
-                    if (durationSeconds < _config.Configuration.MinResumeDurationSeconds)
+                    if (durationSeconds < _config.Configuration.MinResumeDurationSeconds && !(item is Book))
                     {
                         positionTicks = 0;
                         data.Played = playedToCompletion = true;
                     }
                 }
             }
-            else if (positionTicks > 0 && hasRuntime && (item is Book))
+            else if (positionTicks > 0 && hasRuntime && (item is AudioBook))
             {
+                var minIn = TimeSpan.FromTicks(positionTicks).TotalSeconds / 60;
                 // 10,000 ticks per millisecond * 60,000 milliseconds per minute = 600,000,000 ticks per minute
-                var minIn = decimal.Divide(positionTicks, 600000000);
-                var minOut = decimal.Subtract(runtimeTicks, positionTicks) / 600000000;
+                var minOut = (runtimeTicks - positionTicks) / 600000000;
 
                 if (minIn < _config.Configuration.MinAudiobookResume)
                 {
                     // ignore progress during the beginning
                     positionTicks = 0;
                 }
-                else if (minOut > _config.Configuration.MaxAudiobookResume || positionTicks >= runtimeTicks)
+                else if (minOut < _config.Configuration.MaxAudiobookResume || positionTicks >= runtimeTicks)
                 {
                     // mark as completed close to the end
                     positionTicks = 0;
