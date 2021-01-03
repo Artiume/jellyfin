@@ -454,6 +454,6 @@ namespace MediaBrowser.Model.Configuration
         /// Gets or sets the custom Chomecast appid.
         /// </summary>
         /// <value>The custom Chomecast appid.</value>
-        public string CustomChomecastAppid { get; set; } = string.Empty;
+        public string CustomChomecastAppid { get; set; };
     }
 }
