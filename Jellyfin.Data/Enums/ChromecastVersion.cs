@@ -16,7 +16,7 @@
         Unstable = 1
 
         /// <summary>
-        /// Unstable Chromecast version.
+        /// Custom Chromecast version.
         /// </summary>
         Custom = 2
     }
