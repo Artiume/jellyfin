@@ -451,9 +451,9 @@ namespace MediaBrowser.Model.Configuration
         public int LibraryMetadataRefreshConcurrency { get; set; }
         
         /// <summary>
-        /// Gets or sets the custom Chomecast appid.
+        /// Gets or sets the custom Chromecast appid.
         /// </summary>
-        /// <value>The custom Chomecast appid.</value>
+        /// <value>The custom Chromecast appid.</value>
         public string? CustomChromecastAppid { get; set; }
     }
 }
