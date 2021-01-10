@@ -229,6 +229,11 @@ namespace Emby.Server.Implementations.Library
                     // ignore progress during the beginning
                     positionTicks = 0;
                 }
+                else if (TimeSpan.FromTicks(reportedPositionTicks).TotalSeconds - TimeSpan.FromTicks(positionTicks).TotalSeconds) < 3)
+                {
+                    // Not enough playback to save progress, also prevents playedToCompleton on no playback
+                    positionTicks = reportedPositionTicks;
+                }
                 else if (pctIn > _config.Configuration.MaxResumePct || positionTicks >= runtimeTicks)
                 {
                     // mark as completed close to the end
